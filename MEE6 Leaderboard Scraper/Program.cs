@@ -10,8 +10,14 @@ namespace MEE6_Leaderboard_Scraper {
 				return new mee6Format(Json.Decode(new WebClient().DownloadString(url))).guild.name;
 			}
 			catch (WebException wex) {
-				if (wex.Response is HttpWebResponse hwr && (int)hwr.StatusCode == 429) 
-					Console.WriteLine("Error. You have been temporairly banned by Cloudflare for sending too many Requests");				
+				if (wex.Response is HttpWebResponse hwr) {
+					if ((int)hwr.StatusCode == 429)
+						Console.WriteLine("Error. You have been temporairly banned by Cloudflare for sending too many Requests");
+					else if ((int)hwr.StatusCode == 404)
+						Console.WriteLine("This server does not exist. Only enter the number from the URL");
+					else
+						Console.WriteLine(wex);
+				}
 				else
 					Console.WriteLine(wex);
 				return null;
