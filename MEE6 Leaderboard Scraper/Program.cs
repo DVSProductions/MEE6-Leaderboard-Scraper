@@ -31,7 +31,6 @@ namespace MEE6_Leaderboard_Scraper {
 			return false;
 		}
 		static void Main(string[] args) {
-
 			Console.WriteLine("DVSProductions MEE6 Scraper");
 			var page = 0;
 			var dat = new List<mee6Format>();
@@ -53,7 +52,7 @@ namespace MEE6_Leaderboard_Scraper {
 				Console.Write("Scraping page " + page);
 				var ok = false;
 				try {
-					System.Threading.Thread.Sleep(1000 + rng.Next(0, 1000) + autooffset);
+					System.Threading.Thread.Sleep(rng.Next(500, 1500) + autooffset);
 					var sw = System.Diagnostics.Stopwatch.StartNew();
 					dat.Add(new mee6Format(System.Web.Helpers.Json.Decode(new WebClient().DownloadString(GetURL(id, page++)))));
 					autooffset = (int)sw.ElapsedMilliseconds;

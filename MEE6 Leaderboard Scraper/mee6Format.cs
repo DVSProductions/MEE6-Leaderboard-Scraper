@@ -30,7 +30,7 @@ namespace MEE6_Leaderboard_Scraper {
 				public mee6player(dynamic djo) {
 					avatar = djo.avatar;
 					detailed_xp = new List<int>();
-					for (int n = 0; n < djo.detailed_xp.length; n++)
+					for (var n = 0; n < djo.detailed_xp.length; n++)
 						detailed_xp.Add((int)djo.detailed_xp[n]);
 					discriminator = djo.discriminator;
 					id = djo.id;
@@ -41,12 +41,14 @@ namespace MEE6_Leaderboard_Scraper {
 					messages = xp / 20;
 				}
 				public int CompareTo(mee6player other) => other.xp.CompareTo(xp);
+				static string EscapeString(string s,char spacer) {
+					s = s.Replace("\"", "\"\"");
+					return s.Contains("" + spacer) ? "\"" + s + "\"" : s;
+				}
 				public override string ToCSV(char spacer) =>
-					 CreateData(new string[] { id, username, xp.ToString(), position.ToString() }, spacer);
+					 CreateData(new string[] { id, EscapeString(username,spacer), xp.ToString(), position.ToString() }, spacer);
 				public override string GetHeader(char spacer) =>
 					CreateData(new string[] { "id", "Username", "xp", "Position" }, spacer);
-
-
 			}
 			public bool admin { get; set; }
 			public object banner_url { get; set; }
@@ -64,7 +66,6 @@ namespace MEE6_Leaderboard_Scraper {
 				foreach (var elem in (DynamicJsonArray)djo.players)
 					players.Add(new mee6player(elem));
 			}
-
 		}
 	}
 }
